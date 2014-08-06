@@ -3,39 +3,29 @@ var io = require('socket.io').listen(app);
 var fs = require('fs');
 var last;
 var tick;
+var bodyChunk;
 
-
-/*
-Environment           <Domain>
-fxTrade               stream-fxtrade.oanda.com
-fxTrade Practice      stream-fxpractice.oanda.com
-sandbox               stream-sandbox.oanda.com
-*/
-
-// Replace the following variables with your personal ones
-var domain = 'stream-fxpractice.oanda.com'
-var access_token = 'ACCESS-TOKEN'
-var account_id = '12345'
-// Up to 10 instruments, separated by URL-encoded comma (%2C)
-var instruments = "EUR_USD%2CUSD_CAD"
+/* Create config.js from config.js.default */
+var config = require('./config.js');
 
 var https;
 
-if (domain.indexOf("stream-sandbox") > -1) {
+if (config.domain.indexOf("stream-sandbox") > -1) {
   https = require('http');
 } else {
   https = require('https');
 }
+
 var options = {
-  host: domain,
-  path: '/v1/prices?accountId=' + account_id + '&instruments=' + instruments,
+  host: config.domain,
+  path: '/v1/prices?accountId=' + config.account_id + '&instruments=' + config.instruments,
   method: 'GET',
-  headers: {"Authorization" : "Bearer " + access_token},
+  headers: {"Authorization" : "Bearer " + config.access_token},
 };
 
 var request = https.request(options, function(response){
       response.on("data", function(chunk){
-         bodyChunk = chunk.toString();
+         bodyChunk = chunk.toString(); 
       });
       response.on("end", function(chunk){
          console.log("Error connecting to OANDA HTTP Rates Server");
@@ -69,3 +59,4 @@ io.sockets.on('connection', function (socket) {
     }
   }, 0.001);
 });
+

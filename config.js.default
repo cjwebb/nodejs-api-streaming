@@ -1,0 +1,14 @@
+/*
+Environment           <Domain>
+fxTrade               stream-fxtrade.oanda.com
+fxTrade Practice      stream-fxpractice.oanda.com
+sandbox               stream-sandbox.oanda.com
+*/
+
+exports.domain = 'stream-fxpractice.oanda.com'
+exports.account_id = '12345'
+exports.access_token = 'ACCESS-TOKEN'
+
+// Up to 10 instruments, separated by URL-encoded comma (%2C)
+exports.instruments = "EUR_USD%2CUSD_CAD"
+
